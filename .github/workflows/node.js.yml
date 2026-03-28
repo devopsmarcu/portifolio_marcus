@@ -1,5 +1,5 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# Este workflow realiza uma instalação limpa das dependências, faz o build do projeto e executa testes (se existirem)
+# Para mais informações, veja: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
 name: Node.js CI
 
@@ -11,21 +11,30 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        # Versões LTS do Node.js recomendadas para Astro e ambientes modernos
+        node-version: [20.x, 22.x]
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+
+    - name: Install dependencies
+      # npm ci é mais rápido e confiável em ambientes de CI
+      run: npm ci
+
+    - name: Build project
+      # O Astro gera os arquivos estáticos na pasta dist/
+      run: npm run build
+
+    - name: Run tests
+      # Executa testes apenas se o script 'test' estiver definido no package.json
+      run: npm test --if-present
