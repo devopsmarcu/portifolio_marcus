@@ -1,0 +1,329 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Marcus Vinicius | DevOps & Infraestrutura">
+    <div id="terminal-container">
+        <div id="terminal-header">
+            <div class="terminal-buttons">
+                <span class="btn-close"></span>
+                <span class="btn-minimize"></span>
+                <span class="btn-maximize"></span>
+            </div>
+            <div class="terminal-title">marcus-vinicius-portfolio.sh</div>
+        </div>
+        
+        <div id="terminal-body">
+            <header id="portfolio-header">
+                <div id="boot-message" class="response-gray">System initialized... All modules loaded.</div>
+                <h1 id="user-name">Marcus Vinicius</h1>
+                <p id="user-title">DevOps Engineer | Backend Developer | Técnico de TI</p>
+                <p id="user-summary">
+                    Profissional de tecnologia focado em automação, infraestrutura e desenvolvimento backend, 
+                    com experiência em suporte e otimização de sistemas.
+                </p>
+            </header>
+
+            <nav id="navigation-menu">
+                <button class="nav-btn" data-section="about"><span>[</span> Sobre mim <span>]</span></button>
+                <button class="nav-btn" data-section="experience"><span>[</span> Experiência <span>]</span></button>
+                <button class="nav-btn" data-section="skills"><span>[</span> Habilidades <span>]</span></button>
+                <button class="nav-btn" data-section="projects"><span>[</span> Projetos <span>]</span></button>
+                <button class="nav-btn" data-section="education"><span>[</span> Formação <span>]</span></button>
+                <button class="nav-btn" data-section="contact"><span>[</span> Contato <span>]</span></button>
+                <button class="nav-btn highlight-btn" data-section="download-cv"><span>[</span> Download CV <span>]</span></button>
+            </nav>
+
+            <main id="content-display">
+                <div id="output"></div>
+            </main>
+        </div>
+    </div>
+
+    <div id="sound-toggle" title="Alternar som">
+        <span id="sound-icon">🔇</span>
+    </div>
+
+    <audio id="typing-sound" src="https://www.soundjay.com/communication/typewriter-key-1.mp3" preload="auto"></audio>
+    <audio id="enter-sound" src="https://www.soundjay.com/communication/typewriter-return-1.mp3" preload="auto"></audio>
+
+    <script>
+        // Move script.js logic here or to a separate file imported in script tag
+        // For simplicity during migration, I'll copy the logic and adapt it
+        document.addEventListener('DOMContentLoaded', () => {
+            const output = document.getElementById('output');
+            const terminalBody = document.getElementById('terminal-body');
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const typingSound = document.getElementById('typing-sound') as HTMLAudioElement;
+            const enterSound = document.getElementById('enter-sound') as HTMLAudioElement;
+            const soundToggle = document.getElementById('sound-toggle');
+            const soundIcon = document.getElementById('sound-icon');
+
+            let soundEnabled = false;
+            let isTyping = false;
+
+            const sections = {
+                'about': {
+                    cmd: 'cat about.txt',
+                    title: 'Sobre mim',
+                    content: `<p>Olá! Sou Marcus Vinicius, estudante de Ciência da Computação na UFBA e apaixonado por tecnologia.</p>
+                    <p>Meu foco profissional é em <span data-tooltip="Cultura que une desenvolvimento e operações de TI">DevOps</span>, automação e infraestrutura de sistemas. Gosto de resolver problemas complexos e encontrar maneiras de tornar processos mais rápidos, seguros e eficientes.</p>
+                    <p>Atualmente, busco aplicar meus conhecimentos em projetos que envolvam escalabilidade, performance e a melhoria contínua de ambientes tecnológicos.</p>`
+                },
+                'experience': {
+                    cmd: 'cat experience.log',
+                    title: 'Experiência Profissional',
+                    content: `<div class="exp-item">
+                        <h3 class="response-white">Santa Casa da Bahia — Técnico de TI</h3>
+                        <p class="response-gray">Abril 2024 - Atual</p>
+                        <ul style="margin-top: 10px; list-style-type: none;">
+                            <li>* Gerencio usuários e acessos no <span data-tooltip="Serviço da Microsoft para gerenciar redes e usuários">Active Directory</span></li>
+                            <li>* Cuido de servidores de impressão e rede</li>
+                            <li>* Presto suporte técnico presencial e remoto para funcionários</li>
+                            <li>* Desenvolvo automações com <span data-tooltip="Linguagem de script para automação de tarefas no Windows">PowerShell</span> para reduzir tarefas manuais</li>
+                            <li>* Auxilio na manutenção e monitoramento da infraestrutura de TI</li>
+                        </ul>
+                    </div>`
+                },
+                'skills': {
+                    cmd: 'ls skills/',
+                    title: 'Minhas Habilidades',
+                    content: `<div class="skills-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                        <div>
+                            <h4 class="response-blue">Infraestrutura</h4>
+                            <ul style="list-style: none; padding-top: 5px;">
+                                <li>* Active Directory</li>
+                                <li>* Windows Server</li>
+                                <li>* Redes e suporte</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="response-blue">Automação / DevOps</h4>
+                            <ul style="list-style: none; padding-top: 5px;">
+                                <li>* Scripts com PowerShell</li>
+                                <li>* Automação de tarefas</li>
+                                <li>* <span data-tooltip="Práticas de automação para testar e entregar código rapidamente">CI/CD</span> (Conceitos)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="response-blue">Desenvolvimento</h4>
+                            <ul style="list-style: none; padding-top: 5px;">
+                                <li>* Backend</li>
+                                <li>* <span data-tooltip="Interface que permite que dois sistemas se comuniquem">APIs</span></li>
+                                <li>* Git (Controle de versão)</li>
+                            </ul>
+                        </div>
+                    </div>`
+                },
+                'projects': {
+                    cmd: 'ls projects/',
+                    title: 'Projetos Recentes',
+                    content: `<div class="projects-list" style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="project-card" style="border-left: 2px solid var(--text-green); padding-left: 15px; background: rgba(0, 255, 136, 0.02); padding: 15px; border-radius: 0 4px 4px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+                                <h4 class="response-white" style="font-size: 1.1rem;">NetScope - DHCP Management Tool 🔍</h4>
+                                <span class="response-gray" style="font-size: 0.75rem; border: 1px solid #333; padding: 2px 6px; border-radius: 3px;">v2.1 / Open Source</span>
+                            </div>
+                            <p class="response-gray" style="font-size: 0.9rem; margin-top: 8px;">Ferramenta profissional para equipes de suporte técnico que permite gerenciar dispositivos de rede (DHCP) de forma centralizada e segura.</p>
+                            <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+                                <a href="https://github.com/devopsmarcu/Netscope" target="_blank" class="nav-btn" style="font-size: 0.75rem; padding: 5px 10px;"><span>[</span> Ver no GitHub <span>]</span></a>
+                                <button class="nav-btn details-btn" data-project="netscope" style="font-size: 0.75rem; padding: 5px 10px;"><span>[</span> Ver detalhes <span>]</span></button>
+                            </div>
+                            <div id="netscope-details" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px solid #222; animation: fadeIn 0.3s ease;">
+                                <div class="detail-section" style="margin-bottom: 15px;">
+                                    <p class="response-blue" style="font-size: 0.8rem; margin-bottom: 5px;">$ cat netscope_description.txt</p>
+                                    <p class="response-white" style="font-size: 0.85rem; line-height: 1.4;">Desenvolvido para simplificar consultas DHCP em múltiplos servidores Windows. O sistema valida políticas de segurança e permite ligar máquinas remotamente via Wake-on-LAN.</p>
+                                </div>
+                                <div class="detail-section" style="margin-bottom: 15px;">
+                                    <p class="response-blue" style="font-size: 0.8rem; margin-bottom: 5px;">$ ls functionalities/</p>
+                                    <ul style="list-style: none; font-size: 0.85rem; color: var(--text-gray);">
+                                        <li>* Consulta centralizada em múltiplos servidores</li>
+                                        <li>* Busca por MAC, IP, Nome ou Descrição</li>
+                                        <li>* Validação de políticas de segurança</li>
+                                        <li>* Wake-on-LAN (Ligar PC remotamente)</li>
+                                        <li>* Configuração dinâmica via interface</li>
+                                    </ul>
+                                </div>
+                                <div class="detail-section" style="margin-bottom: 15px;">
+                                    <p class="response-blue" style="font-size: 0.8rem; margin-bottom: 5px;">$ ls tech_stack/</p>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.8rem;">
+                                        <span style="color: #68217a;">#C#</span> <span style="color: #512bd4;">#.NET_9_WPF</span> <span style="color: #4e94ce;">#PowerShell</span> <span style="color: #f5cb5c;">#JSON</span>
+                                    </div>
+                                </div>
+                                <div class="detail-section">
+                                    <p class="response-green" style="font-size: 0.8rem; font-weight: bold;">[ DIFERENCIAIS ]</p>
+                                    <p class="response-gray" style="font-size: 0.8rem;">Alta compatibilidade corporativa, foco em produtividade e execução segura de scripts.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-card" style="border-left: 2px solid var(--text-cyan); padding-left: 15px;">
+                            <h4 class="response-white">Automação de Infraestrutura</h4>
+                            <p class="response-gray" style="font-size: 0.9rem;">Scripts para facilitar o dia a dia na gestão de servidores e usuários.</p>
+                            <p style="font-size: 0.8rem; margin-top: 5px;"><span class="response-cyan">Tecnologias:</span> PowerShell, Active Directory</p>
+                        </div>
+                        <div class="project-card" style="border-left: 2px solid var(--text-cyan); padding-left: 15px;">
+                            <h4 class="response-white">Monitoramento de Rede</h4>
+                            <p class="response-gray" style="font-size: 0.9rem;">Painéis visuais para acompanhar a saúde dos servidores da Santa Casa.</p>
+                            <p style="font-size: 0.8rem; margin-top: 5px;"><span class="response-cyan">Tecnologias:</span> Dashboards, Zabbix/Grafana</p>
+                        </div>
+                    </div>`
+                },
+                'education': {
+                    cmd: 'cat education.txt',
+                    title: 'Formação Acadêmica',
+                    content: `<p><strong class="response-white">UFBA — Universidade Federal da Bahia</strong></p>
+                    <p class="response-cyan">Bacharelado em Ciência da Computação</p>
+                    <p class="response-gray">Período: 2022 – 2026 (Em andamento)</p>`
+                },
+                'contact': {
+                    cmd: 'contact --show',
+                    title: 'Vamos conversar?',
+                    content: `<div style="display: flex; flex-direction: column; gap: 20px;">
+                        <p>Estou sempre aberto a novos desafios e conexões profissionais.</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                            <div style="flex: 1; min-width: 200px;">
+                                <p>🔗 <span class="response-cyan">LinkedIn:</span> <a href="https://linkedin.com/in/marcus-vinicius-25a675398" target="_blank" style="color: #00f2ff;">linkedin.com/in/marcus-vinicius</a></p>
+                                <p>📧 <span class="response-cyan">Email:</span> marcus.vinicius@ufba.br</p>
+                                <p>📱 <span class="response-cyan">WhatsApp:</span> (71) 9XXXX-XXXX</p>
+                            </div>
+                            <div style="flex: 1; min-width: 250px; background: #0c0c0c; padding: 15px; border-radius: 4px; border: 1px solid #222;">
+                                <h4 class="response-green" style="margin-bottom: 10px;">Mande uma mensagem:</h4>
+                                <form style="display: flex; flex-direction: column; gap: 8px;">
+                                    <input type="text" placeholder="Seu Nome" style="background: #161616; border: 1px solid #333; color: white; padding: 5px 10px; font-family: var(--font-mono); font-size: 0.8rem;">
+                                    <input type="email" placeholder="Seu Email" style="background: #161616; border: 1px solid #333; color: white; padding: 5px 10px; font-family: var(--font-mono); font-size: 0.8rem;">
+                                    <textarea placeholder="Mensagem" rows="3" style="background: #161616; border: 1px solid #333; color: white; padding: 5px 10px; font-family: var(--font-mono); font-size: 0.8rem; resize: none;"></textarea>
+                                    <button type="button" class="nav-btn" style="width: fit-content; margin-top: 5px; font-size: 0.8rem;"><span>[</span> Enviar <span>]</span></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>`
+                }
+            };
+
+            soundToggle?.addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                if (soundIcon) soundIcon.textContent = soundEnabled ? '🔊' : '🔇';
+            });
+
+            function playTypingSound() {
+                if (soundEnabled && typingSound) {
+                    typingSound.currentTime = 0;
+                    typingSound.play().catch(() => {});
+                }
+            }
+
+            function playEnterSound() {
+                if (soundEnabled && enterSound) {
+                    enterSound.currentTime = 0;
+                    enterSound.play().catch(() => {});
+                }
+            }
+
+            async function typeContent(text, container, speed = 10) {
+                isTyping = true;
+                const div = document.createElement('div');
+                container.innerHTML = '';
+                container.appendChild(div);
+
+                let currentHTML = '';
+                const parts = text.match(/(<[^>]+>|[^<]+)/g) || [];
+                
+                for (const part of parts) {
+                    if (part.startsWith('<')) {
+                        currentHTML += part;
+                        div.innerHTML = currentHTML + '<span class="cursor"></span>';
+                    } else {
+                        for (let j = 0; j < part.length; j++) {
+                            currentHTML += part[j];
+                            div.innerHTML = currentHTML + '<span class="cursor"></span>';
+                            if (soundEnabled) playTypingSound();
+                            await new Promise(resolve => setTimeout(resolve, speed));
+                        }
+                    }
+                }
+
+                div.innerHTML = text;
+                isTyping = false;
+            }
+
+            async function showSection(sectionKey) {
+                if (isTyping) return;
+
+                if (sectionKey === 'download-cv') {
+                    playEnterSound();
+                    alert('Simulando o download do currículo de Marcus Vinicius...');
+                    return;
+                }
+
+                const section = sections[sectionKey];
+                if (!section) return;
+
+                navButtons.forEach(btn => {
+                    if (btn instanceof HTMLElement && btn.dataset.section === sectionKey) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+
+                if (output) output.innerHTML = '';
+                const block = document.createElement('div');
+                block.className = 'content-block';
+                
+                const cmdLine = document.createElement('div');
+                cmdLine.className = 'command-line';
+                cmdLine.innerHTML = `<span class="prompt">marcus@devops:~$</span> <span class="cmd">${section.cmd}</span>`;
+                block.appendChild(cmdLine);
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<h2 class="card-title"><span>></span> ${section.title}</h2><div class="card-content"></div>`;
+                block.appendChild(card);
+                
+                output?.appendChild(block);
+                playEnterSound();
+
+                const cardContent = card.querySelector('.card-content');
+                if (cardContent) await typeContent(section.content, cardContent);
+                
+                terminalBody?.scrollTo({
+                    top: block.offsetTop - 50,
+                    behavior: 'smooth'
+                });
+            }
+
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn instanceof HTMLElement) {
+                        const section = btn.dataset.section;
+                        if (section) showSection(section);
+                    }
+                });
+            });
+
+            output?.addEventListener('click', (e) => {
+                const target = e.target as HTMLElement;
+                const detailBtn = target.closest('.details-btn') as HTMLElement;
+                if (detailBtn) {
+                    const projectId = detailBtn.dataset.project;
+                    const detailsDiv = document.getElementById(`${projectId}-details`);
+                    if (detailsDiv) {
+                        const isVisible = detailsDiv.style.display === 'block';
+                        detailsDiv.style.display = isVisible ? 'none' : 'block';
+                        detailBtn.innerHTML = isVisible ? '<span>[</span> Ver detalhes <span>]</span>' : '<span>[</span> Fechar detalhes <span>]</span>';
+                        playEnterSound();
+                        if (!isVisible) {
+                            setTimeout(() => {
+                                detailsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }, 100);
+                        }
+                    }
+                }
+            });
+
+            setTimeout(() => {
+                showSection('about');
+            }, 1000);
+        });
+    </script>
+</Layout>
