@@ -1,329 +1,37 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marcus Silva | Marcola — IT Technician & Software Developer</title>
-    <meta name="description" content="Portfólio de Marcus Silva (Marcola), IT Technician e Desenvolvedor de Software em Salvador, Bahia. Especialista em infraestrutura, automação e sistemas full-stack.">
+    <title>Marcus Silva | Marcus-Santos — IT Technician & Software Developer</title>
+    <meta name="description"
+        content="Portfólio de Marcus Silva (Marcus-Santos), IT Technician e Desenvolvedor de Software em Salvador, Bahia. Especialista em infraestrutura, automação e sistemas full-stack.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #0d0d0d;
-            --text-color: #00FF88;
-            --accent-color: #00e5ff;
-            --muted-color: #008f4f;
-            --shadow-color: rgba(0, 255, 136, 0.1);
-            --font-main: 'Fira Code', monospace;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-            selection-background-color: var(--text-color);
-            selection-color: var(--bg-color);
-        }
-
-        /* Scanline Overlay */
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 1000;
-            background-size: 100% 4px, 3px 100%;
-            pointer-events: none;
-            opacity: 0.3;
-        }
-
-        /* Flicker effect */
-        @keyframes flicker {
-            0% { opacity: 0.97; }
-            5% { opacity: 0.95; }
-            10% { opacity: 0.9; }
-            15% { opacity: 0.95; }
-            20% { opacity: 0.98; }
-            100% { opacity: 1; }
-        }
-
-        .crt-effect {
-            animation: flicker 0.15s infinite;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-color);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--muted-color);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-color);
-        }
-
-        /* Layout */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-        }
-
-        section {
-            padding: 4rem 0;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease-out;
-        }
-
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Typography */
-        h1, h2, h3 {
-            color: var(--accent-color);
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-        }
-
-        a {
-            color: var(--accent-color);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        a:hover {
-            color: var(--text-color);
-            text-shadow: 0 0 8px var(--text-color);
-        }
-
-        .prompt {
-            color: var(--accent-color);
-            margin-right: 10px;
-            user-select: none;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 1.2em;
-            background-color: var(--text-color);
-            margin-left: 5px;
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            from, to { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Hero */
-        #hero {
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .hero-content {
-            font-size: 1.2rem;
-        }
-
-        .hero-typing {
-            min-height: 150px;
-            margin-bottom: 2rem;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .btn {
-            border: 1px solid var(--text-color);
-            padding: 0.8rem 1.5rem;
-            color: var(--text-color);
-            font-weight: 600;
-            background: transparent;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            font-family: var(--font-main);
-        }
-
-        .btn:hover {
-            background: var(--text-color);
-            color: var(--bg-color);
-            box-shadow: 0 0 15px var(--text-color);
-        }
-
-        /* Skills */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category h3 {
-            font-size: 1.1rem;
-            border-bottom: 1px solid var(--muted-color);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-        }
-
-        .tag {
-            border: 1px solid var(--muted-color);
-            padding: 0.3rem 0.8rem;
-            font-size: 0.9rem;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .tag:hover {
-            border-color: var(--text-color);
-            background: var(--shadow-color);
-            transform: scale(1.05);
-        }
-
-        /* Projects */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            border: 1px solid #333;
-            padding: 1.5rem;
-            position: relative;
-            background: rgba(20, 20, 20, 0.5);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .project-card:hover {
-            border-color: var(--text-color);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
-            transform: translateY(-5px);
-        }
-
-        .project-card::before {
-            content: "[PROJECT]";
-            position: absolute;
-            top: -10px;
-            left: 15px;
-            background: var(--bg-color);
-            padding: 0 5px;
-            font-size: 0.7rem;
-            color: var(--muted-color);
-        }
-
-        .project-header h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-
-        .project-stack {
-            font-size: 0.8rem;
-            color: var(--muted-color);
-            margin-bottom: 1rem;
-        }
-
-        .project-desc {
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-            color: #ccc;
-        }
-
-        /* Contact */
-        .contact-list {
-            list-style: none;
-        }
-
-        .contact-list li {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        /* Footer */
-        footer {
-            padding: 4rem 0;
-            text-align: center;
-            border-top: 1px solid #222;
-        }
-
-        /* Section Header Prompts */
-        .section-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .container {
-                padding: 1rem;
-            }
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-            .btn-group {
-                flex-direction: column;
-            }
-            .hero-typing {
-                font-size: 1rem;
-                min-height: 200px;
-            }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="crt-effect">
     <div class="container">
         <!-- HERO -->
         <section id="hero" class="visible">
             <div class="hero-content">
                 <div class="terminal-header">
-                    <span class="prompt">user@marcola:~$</span>
+                    <span class="prompt">user@Marcus-Santos:~$</span>
                     <span id="typewriter-command">whoami</span>
                 </div>
                 <div class="hero-typing" id="hero-output">
                     <!-- Typing effect will populate this -->
                 </div>
                 <div class="btn-group">
-                    <button class="btn" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">Ver Projetos</button>
-                    <button class="btn" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Contato</button>
+                    <button class="btn"
+                        onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">Ver
+                        Projetos</button>
+                    <button class="btn"
+                        onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Contato</button>
                 </div>
             </div>
         </section>
@@ -335,9 +43,15 @@
                 <h2>cat bio.txt</h2>
             </div>
             <div class="bio-content">
-                <p>Marcus Silva atua como IT Technician na <strong>Santa Casa da Bahia</strong>, onde gerencia infraestrutura crítica incluindo Active Directory, servidores de impressão e automação via PowerShell. Como desenvolvedor de sistemas internos full-stack, cria soluções que otimizam processos institucionais.</p>
+                <p>Marcus Silva atua como IT Technician na <strong>Santa Casa da Bahia</strong>, onde gerencia
+                    infraestrutura crítica incluindo Active Directory, servidores de impressão e automação via
+                    PowerShell. Como desenvolvedor de sistemas internos full-stack, cria soluções que otimizam processos
+                    institucionais.</p>
                 <br>
-                <p>Atualmente cursando <strong>Ciência da Computação na UFBA</strong> (conclusão em 2026). Entusiasta de sistemas que funcionam com eficiência máxima e código limpo. Usuário de Fedora Linux no dia a dia e Windows no ambiente corporativo.</p>
+                <p>Atualmente cursando <strong>Bacharelado interdiciplinar em Ciencia e Tecnologia na UFBA</strong>
+                    (conclusão em 2026). Entusiasta de
+                    sistemas que funcionam com eficiência máxima e código limpo. Usuário de Fedora Linux no dia a dia e
+                    Windows no ambiente corporativo.</p>
             </div>
         </section>
 
@@ -411,42 +125,48 @@
                     <div class="project-header">
                         <h3>StockFlow</h3>
                         <div class="project-stack">Next.js 14 · MySQL · TailwindCSS</div>
-                        <p class="project-desc">Sistema de gestão de ativos TIC para a Santa Casa da Bahia. Módulos de estoque, infraestrutura, relatórios com sparklines SVG e log de auditoria.</p>
+                        <p class="project-desc">Sistema de gestão de ativos TIC para a Santa Casa da Bahia. Módulos de
+                            estoque, infraestrutura, relatórios com sparklines SVG e log de auditoria.</p>
                     </div>
                 </div>
                 <div class="project-card">
                     <div class="project-header">
                         <h3>QuickTag Web</h3>
                         <div class="project-stack">Node.js/Express · React 19 · MySQL</div>
-                        <p class="project-desc">Sistema de etiquetas térmicas patrimoniais. Interface web para geração e impressão automatizada.</p>
+                        <p class="project-desc">Sistema de etiquetas térmicas patrimoniais. Interface web para geração e
+                            impressão automatizada.</p>
                     </div>
                 </div>
                 <div class="project-card">
                     <div class="project-header">
                         <h3>Gestor de Contas</h3>
                         <div class="project-stack">Electron · React · SQLite</div>
-                        <p class="project-desc">App desktop de finanças pessoais com CRUD completo e calculadora popover. Build otimizado para Windows.</p>
+                        <p class="project-desc">App desktop de finanças pessoais com CRUD completo e calculadora
+                            popover. Build otimizado para Windows.</p>
                     </div>
                 </div>
                 <div class="project-card">
                     <div class="project-header">
                         <h3>ObsidianAI — RAG Local</h3>
                         <div class="project-stack">FastAPI · ChromaDB · Ollama</div>
-                        <p class="project-desc">Chatbot RAG offline que interage com vaults Obsidian. Privacidade total rodando localmente em hardware modesto.</p>
+                        <p class="project-desc">Chatbot RAG offline que interage com vaults Obsidian. Privacidade total
+                            rodando localmente em hardware modesto.</p>
                     </div>
                 </div>
                 <div class="project-card">
                     <div class="project-header">
                         <h3>Qualitor API Wrapper</h3>
                         <div class="project-stack">Python · FastAPI · SOAP</div>
-                        <p class="project-desc">Wrapper REST sobre API SOAP legada do Qualitor. Integrado com Zabbix para automação de service desk.</p>
+                        <p class="project-desc">Wrapper REST sobre API SOAP legada do Qualitor. Integrado com Zabbix
+                            para automação de service desk.</p>
                     </div>
                 </div>
                 <div class="project-card">
                     <div class="project-header">
                         <h3>Portfólio CLI</h3>
                         <div class="project-stack">HTML · CSS · JS puro</div>
-                        <p class="project-desc">Este site: estética terminal minimalista, alta performance e zero frameworks externos.</p>
+                        <p class="project-desc">Este site: estética terminal minimalista, alta performance e zero
+                            frameworks externos.</p>
                     </div>
                 </div>
             </div>
@@ -456,73 +176,28 @@
         <section id="contact">
             <div class="section-header">
                 <span class="prompt">~/contact $</span>
-                <h2>finger marcola</h2>
+                <h2>finger Marcus-Santos</h2>
             </div>
             <ul class="contact-list">
-                <li><span class="prompt">> GitHub:</span> <a href="https://github.com/marcola" target="_blank">github.com/marcola</a></li>
-                <li><span class="prompt">> LinkedIn:</span> <a href="https://linkedin.com/in/marcola" target="_blank">linkedin.com/in/marcola</a></li>
-                <li><span class="prompt">> Email:</span> <a href="mailto:marcola@example.com">marcola@dev.com.br</a></li>
+                <li><span class="prompt">> GitHub:</span> <a href="https://github.com/Marcus-Santos"
+                        target="_blank">github.com/Marcus-Santos</a></li>
+                <li><span class="prompt">> LinkedIn:</span> <a href="https://linkedin.com/in/Marcus-Santos"
+                        target="_blank">linkedin.com/in/Marcus-Santos</a></li>
+                <li><span class="prompt">> Email:</span> <a
+                        href="mailto:Marcus-Santos@example.com">Marcus-Santos@dev.com.br</a>
+                </li>
                 <li><span class="prompt">> Local:</span> Salvador, BA — Brasil</li>
             </ul>
         </section>
 
         <footer>
             <div class="footer-content">
-                <span class="prompt">user@marcola:~$</span> exit<span class="cursor"></span>
+                <span class="prompt">user@Marcus-Santos:~$</span> exit<span class="cursor"></span>
             </div>
         </footer>
     </div>
 
-    <script>
-        // Typewriter Effect
-        const heroText = [
-            "> Marcus Silva — IT Technician & Software Developer",
-            "> Salvador, BA · UFBA Computer Science '26",
-            "> Santa Casa da Bahia · Sistemas internos · DevOps · Automação"
-        ];
-
-        async function typeWriter(elementId, textArray) {
-            const element = document.getElementById(elementId);
-            for (let i = 0; i < textArray.length; i++) {
-                const line = document.createElement('p');
-                line.style.marginBottom = '0.5rem';
-                element.appendChild(line);
-                
-                const text = textArray[i];
-                for (let char of text) {
-                    line.textContent += char;
-                    await new Promise(r => setTimeout(r, 20));
-                }
-                await new Promise(r => setTimeout(r, 150));
-            }
-            // Add cursor at the end
-            const lastLine = element.lastChild;
-            const cursor = document.createElement('span');
-            cursor.className = 'cursor';
-            lastLine.appendChild(cursor);
-        }
-
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Initialize
-        window.addEventListener('load', () => {
-            typeWriter('hero-output', heroText);
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
+
 </html>
